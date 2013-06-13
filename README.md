@@ -15,7 +15,7 @@ Google Charts support for your Backbone app.
 - CoffeeScript compiled JavaScript under `lib/backbone/GoogleChart.js`
 
 ## Usage
-load Google API ( under the `head` section )
+load Google API ( place it under the `head` section )
 ```html
 <script src='http://www.google.com/jsapi' type='text/javascript'></script>
 ```
