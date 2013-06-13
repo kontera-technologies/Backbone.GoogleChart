@@ -24,12 +24,12 @@ class Backbone.GoogleChart extends Backbone.View
   # 
   ###
   initialize: ( options ) ->
-    options.chartOptions? or throw "chartOptions key is missing"
-    delete options.chartOptions.containerId # Please use `id` to specified to wrapping element id
-    @google = google.visualization
-    @wrapper = new @google.ChartWrapper options.chartOptions
-    ['ready','select', 'error'].map @listen
-  
+    google.load 'visualization', '1', callback: =>
+      options.chartOptions? or throw "chartOptions is missing"
+      delete options.chartOptions.containerId # Please use `id` to specified the wrapping element id
+      @google = google.visualization
+      @wrapper = new @google.ChartWrapper options.chartOptions
+      ['ready','select', 'error'].map @listen
   
   ###
   # Execute a callback once a given element ID appears in DOM ( mini livequery ).

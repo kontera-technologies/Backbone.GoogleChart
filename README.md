@@ -58,17 +58,17 @@ chart = new Backbone.GoogleChart({chartOptions: {
   }
 });
 
+chart.on("ready",function(chartObject) {
+  console.log(""+ chartObject + " is ready");
+});
+
 $('body').append( chart.redner().el );
 
-chart.on("select",function(graphObject) {
-  console.log("Someone clicked on " + graphObject);
+chart.on("select",function(chartObject) {
+  console.log("Someone clicked on " + chartObject);
 });
 
-chart.on("ready",function(graphObject) {
-  console.log(""+ graphObject + " is ready");
-});
-
-chart.on("error",function(graphObject) {
+chart.on("error",function(chartObject) {
   console.log("Oops!");
 });
 
