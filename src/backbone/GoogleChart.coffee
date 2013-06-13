@@ -89,7 +89,7 @@ class Backbone.GoogleChart extends Backbone.View
   ###
   listen: ( event ) =>
     @google.events.addListener @wrapper, event, =>
-      @$el.trigger event, @wrapper.getChart()
+      @trigger event, @wrapper.getChart()
 
   ###
   # Generate a random ID, gc_XXX

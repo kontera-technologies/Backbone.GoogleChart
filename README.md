@@ -4,7 +4,7 @@ Backbone.GoogleChart
 Google Charts support for your Backbone app.
 
 ## What?
-`Backbone.GoogleChart` is basically a `Backbone.View` that wraps the Google Chart API
+`Backbone.GoogleChart` is basically a `Backbone.View` that wraps the GoogleChart API in a "backbone" style
 
 ## Dependencies
 - [Backbone.js](http://backbonejs.org/)
@@ -38,6 +38,7 @@ googleChartWrapperOptions = {
   options: {'title': 'Countries'},
 }
 
+// default `Backbone.View` options ( such as `id`, `className` etc...) can also be passed
 columnChart = new Backbone.GoogleChart({chartOptions: googleChartWrapperOptions});
 ```
 
@@ -46,4 +47,29 @@ draw it by adding it to the DOM
 $('body').append( columnChart.render().el );
 ```
 
-Note that in addition to the default `Backbone.View` options ( such as `id`, `className` etc...) [google.visualization.ChartWrapper](https://developers.google.com/chart/interactive/docs/reference#chartwrapperobject) options should also be passed through `chartOptions` when initializing new charts.
+## Events
+to bind to events
+```javascript
+chart = new Backbone.GoogleChart({chartOptions: {
+    chartType: 'ColumnChart',
+    dataTable: [['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
+                [700, 300, 400, 500, 600, 800]],
+    options: {'title': 'Countries'},
+  }
+});
+
+$('body').append( chart.redner().el );
+
+chart.on("select",function(graphObject) {
+  console.log("Someone clicked on " + graphObject);
+});
+
+chart.on("ready",function(graphObject) {
+  console.log(""+ graphObject + " is ready");
+});
+
+chart.on("error",function(graphObject) {
+  console.log("Oops!");
+});
+
+```
