@@ -24,7 +24,7 @@ class Backbone.GoogleChart extends Backbone.View
   # 
   ###
   initialize: ( options ) ->
-    google.load 'visualization', '1', callback: =>
+    google.load 'visualization', '1', packages: ['corechart'], callback: =>
       options.chartOptions? or throw "chartOptions is missing"
       delete options.chartOptions.containerId # Please use `id` to specified the wrapping element id
       @google = google.visualization
