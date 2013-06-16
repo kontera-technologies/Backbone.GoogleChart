@@ -24,12 +24,26 @@ class Backbone.GoogleChart extends Backbone.View
   # 
   ###
   initialize: ( options ) ->
+    options.chartOptions? or throw "chartOptions is missing"
+    delete options.chartOptions.containerId # Please use `id` to specified the wrapping element id
+    
     google.load 'visualization', '1', packages: ['corechart'], callback: =>
-      options.chartOptions? or throw "chartOptions is missing"
-      delete options.chartOptions.containerId # Please use `id` to specified the wrapping element id
+      @onGoogleLoad "loaded"
+      
+    @onGoogleLoad =>
       @google = google.visualization
       @wrapper = new @google.ChartWrapper options.chartOptions
       ['ready','select', 'error'].map @listen
+  
+  onGoogleLoad: ( callback  )=>
+    if callback == "loaded"
+      @googleLoaded = true
+      _( @onGoogleLoadItems ).map (fn)-> fn()
+    else
+      if @googleLoaded
+        callback()
+      else
+        (@onGoogleLoadItems ||= []).push callback
   
   ###
   # Execute a callback once a given element ID appears in DOM ( mini livequery ).
@@ -70,8 +84,9 @@ class Backbone.GoogleChart extends Backbone.View
   # return the current instance 
   ###
   render: =>
-    @constructor.watch "##{@el.id}", =>
-      @wrapper.draw @el.id
+    @onGoogleLoad =>
+      @constructor.watch "##{@el.id}", =>
+        @wrapper.draw @el.id
     this
   
   ###
@@ -96,3 +111,4 @@ class Backbone.GoogleChart extends Backbone.View
   ###
   randomID: ->
     _.uniqueId "gc_"
+
