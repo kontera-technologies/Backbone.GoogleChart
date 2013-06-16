@@ -45,12 +45,11 @@ $('body').append( columnChart.render().el );
 ## Events
 to bind to events
 ```javascript
-chart = new Backbone.GoogleChart({chartOptions: {
+chart = new Backbone.GoogleChart({
     chartType: 'ColumnChart',
     dataTable: [['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
                 [700, 300, 400, 500, 600, 800]],
     options: {'title': 'Countries'},
-  }
 });
 
 chart.on("ready",function(chartObject) {
