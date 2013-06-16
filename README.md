@@ -28,15 +28,13 @@ load `Backbone.GoogleChart`
 initialize new `Backbone.GoogleChart` object
 ```javascript
 // https://developers.google.com/chart/interactive/docs/reference#chartwrapperobject
-googleChartWrapperOptions = {
+// default `Backbone.View` options ( such as `id`, `className` etc...) can also be passed
+columnChart = new Backbone.GoogleChart({
   chartType: 'ColumnChart',
   dataTable: [['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
               [700, 300, 400, 500, 600, 800]],
   options: {'title': 'Countries'},
-}
-
-// default `Backbone.View` options ( such as `id`, `className` etc...) can also be passed
-columnChart = new Backbone.GoogleChart({chartOptions: googleChartWrapperOptions});
+});
 ```
 
 draw it by adding it to the DOM

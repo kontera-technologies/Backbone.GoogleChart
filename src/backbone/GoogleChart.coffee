@@ -1,38 +1,32 @@
 class Backbone.GoogleChart extends Backbone.View
   ###
   # Initialize a new GoogleChart object
-  # In addition to the default Backbone.View options ( such as id, className etc...)
-  # Google.ChartWrapper#options should also be passed using the `chartOptions` key
   #
   # Example:
-  #   options = {
+  #   lineChart = new Backbone.GoogleChart({
   #     chartType: 'ColumnChart',
   #     dataTable: [['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
   #                [700, 300, 400, 500, 600, 800]],
   #     options: {'title': 'Countries'},
-  #   }
+  #   });
   #
-  #   graph = new Backbone.GoogleChart({chartOptions: options});
-  #
-  #   $('body').append( graph.render().el );
+  #   $('body').append( lineChart.render().el );
   # 
-  # For the complete list of options that can be passed through the `chartOptions` attribute
+  # For the complete list of options please checkout
   # https://developers.google.com/chart/interactive/docs/reference#chartwrapperobject
-  #
-  # Please don't try to pass `containerId`, it will be ignored, instead use the `id` attribute, e.g
-  #   graph = new Backbone.GoogleChart({chartOptions: options, id:"MyCustomID"});
   # 
   ###
   initialize: ( options ) ->
-    options.chartOptions? or throw "chartOptions is missing"
-    delete options.chartOptions.containerId # Please use `id` to specified the wrapping element id
-    
+    chartOptions = _.extend({},options)
+    ['el', 'id', 'attributes', 'className', 'tagName'].map (key)->
+      delete chartOptions[key]
+
     google.load 'visualization', '1', packages: ['corechart'], callback: =>
       @onGoogleLoad "loaded"
       
     @onGoogleLoad =>
       @google = google.visualization
-      @wrapper = new @google.ChartWrapper options.chartOptions
+      @wrapper = new @google.ChartWrapper chartOptions
       ['ready','select', 'error'].map @listen
   
   onGoogleLoad: ( callback  )=>
