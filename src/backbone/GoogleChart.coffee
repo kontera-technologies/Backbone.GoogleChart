@@ -55,12 +55,15 @@ class Backbone.GoogleChart extends Backbone.View
     (@_list ||= {})[id] = fn
     return if @_watching
     @_watching = true
-
+    
+    timeout = 10
     (func = =>
       _(@_list).map ( fn, id ) =>
         fn() || delete @_list[id] if $(id)[0]
-      @_watching = false if _(@_list).isEmpty()
-      setTimeout(func, 200)
+      if _(@_list).isEmpty()
+        @_watching = false
+      else
+        setTimeout(func, timeout+=10)
     )()
 
   ###
