@@ -45,21 +45,21 @@ $('body').append( columnChart.render().el );
 ## Events
 to bind to events
 ```javascript
-chart = new Backbone.GoogleChart({
+var chart = new Backbone.GoogleChart({
     chartType: 'ColumnChart',
     dataTable: [['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
                 [700, 300, 400, 500, 600, 800]],
-    options: {'title': 'Countries'},
+    options: {'title': 'Countries'}
 });
 
 chart.on("ready",function(chartObject) {
-  console.log(""+ chartObject + " is ready");
+  alert(""+ chartObject + " is ready");
 });
 
-$('body').append( chart.redner().el );
+$('body').append( chart.render().el );
 
 chart.on("select",function(chartObject) {
-  console.log("Someone clicked on " + chartObject);
+  alert("Someone clicked on column " + chartObject.getSelection()[0].column);
 });
 
 chart.on("error",function(chartObject) {
@@ -67,3 +67,77 @@ chart.on("error",function(chartObject) {
 });
 
 ```
+
+## Formatters
+use the built-in generic formatter
+```javascript
+var myFormatter = function(text) {
+  return text + "$"
+};
+
+var chart = new Backbone.GoogleChart({
+  formatter: { 
+    callback: myFormatter,
+    columns: [1,3,5]
+  },
+  chartType: 'ColumnChart',
+  dataTable: [['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
+              [700, 300, 400, 500, 600, 800]],
+  options: {'title': 'Countries'}
+});
+
+$('body').append( chart.render().el );
+```
+
+use the `beforeDraw` callback
+```
+var chart = new Backbone.GoogleChart({
+  beforeDraw: function( chart, options) {
+    var formatter = new google.visualization.NumberFormat({
+      prefix: '$', negativeColor: 'red'
+    });
+    
+    // format column 1,3,5
+    formatter.format(options.dataTable,1);  
+    formatter.format(options.dataTable,3);
+    formatter.format(options.dataTable,5);
+  },
+  chartType: 'ColumnChart',
+  dataTable: [['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU'],
+              [700, 300, 400, 500, 600, 800]],
+  options: {'title': 'Countries'}
+});
+
+$('body').append( chart.render().el );
+```
+
+the hard way
+```javascript
+google.load('visualization', '1',{ packages: ['corechart'], callback: function() {
+  var data = google.visualization.arrayToDataTable([
+    ['Task', 'Hours per Day'],
+    ['Work',     11],
+    ['Eat',      2],
+    ['Commute',  2],
+    ['Watch TV', 2],
+    ['Sleep',    7]
+  ]);
+  
+  var formatter = new google.visualization.NumberFormat(
+    {prefix: '$', negativeColor: 'red', negativeParens: true
+  });
+  
+  formatter.format(data,1); // format column 1
+  
+  var chart = new Backbone.GoogleChart({
+    chartType: 'ColumnChart',
+    dataTable: data,
+    options: {'title': 'Countries'}
+  });
+  
+  $('body').append( chart.render().el );
+  
+}});
+
+```
+
