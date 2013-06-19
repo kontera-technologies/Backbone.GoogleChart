@@ -90,7 +90,7 @@ $('body').append( chart.render().el );
 ```
 
 use the `beforeDraw` callback
-```
+```javascript
 var chart = new Backbone.GoogleChart({
   beforeDraw: function( chart, options) {
     var formatter = new google.visualization.NumberFormat({
