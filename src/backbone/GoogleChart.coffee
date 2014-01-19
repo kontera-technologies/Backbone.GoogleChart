@@ -40,7 +40,6 @@ class Backbone.GoogleChart extends Backbone.View
             )
 
       @wrapper = new @google.ChartWrapper chartOptions
-      ['ready','select', 'error'].map @listen
 
   ###
   # Execute a callback once google visualization fully loaded
@@ -54,7 +53,7 @@ class Backbone.GoogleChart extends Backbone.View
         callback()
       else
         (@onGoogleLoadItems ||= []).push callback
-  
+      
   ###
   # Execute a callback once a given element ID appears in DOM ( mini livequery ).
   #
@@ -104,21 +103,52 @@ class Backbone.GoogleChart extends Backbone.View
   # For the complete event list please look at the events section under
   #  https://developers.google.com/chart/interactive/docs/reference#chartwrapperobject
   # 
-  # By default the ready, select and error events are register automatically on initialization
-  # so instead of calling this function directly consider this:
   #   graph = new Backbone.GoogleChart({chartOptions: options});
   #   graph.on("select",function(graph) { console.log("Someone click on me!") })
   #   graph.on("error",function(graph) { console.log("Oops") })
   #   graph.on("ready",function(graph) { console.log("I'm ready!") })
   # 
-  ###
-  listen: ( event ) =>
-    @google.events.addListener @wrapper, event, =>
-      @trigger event, @wrapper.getChart()
+  ###  
+  bind: (event, callback)=>
+    @_listers[event] ||= @_addGoogleListener event
+    super event, callback
 
+  ###
+  # alias of @bind
+  ###
+  on: @::bind
+  
+  ###
+  # Unbind events, please look at Backbone.js docs for the API
+  ###
+  unbind: (event, callback, context)=>
+    if event
+      @_removeGoogleListener event
+    else if callback
+      _(@_listers).pairs().map (pair)=>
+        @_removeGoogleListener pair[0] if pair[1] == callback
+    else
+      _(@_listers).values().map @_removeGoogleListener
+        
+    super event, callback, context
+  
+  ###
+  # alias of @unbind
+  ###
+  off: @::unbind
+  
+  _addGoogleListener: ( event ) =>
+      @google.events.addListener @wrapper, event, =>
+        @trigger event, @wrapper.getChart()
+        
+  _removeGoogleListener: ( event ) =>
+    @google.events.removeListener @_listers[event]
+    delete @_listers[event]
+    
+  _listers: {}
+  
   ###
   # Generate a random ID, gc_XXX
   ###
   randomID: ->
     _.uniqueId "gc_"
-
