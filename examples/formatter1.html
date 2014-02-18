@@ -51,8 +51,8 @@
             _this = this;
 
           chartOptions = _.extend({}, options);
-          ['el', 'id', 'attributes', 'className', 'tagName'].map(function(key) {
-            return delete chartOptions[key];
+          ['el', 'id', 'attributes', 'className', 'tagName'].map(function(k) {
+            return delete chartOptions[k];
           });
           google.load('visualization', '1', {
             packages: ['corechart'],
@@ -67,7 +67,9 @@
             if (chartOptions.dataTable instanceof Array) {
               chartOptions.dataTable = _this.google.arrayToDataTable(chartOptions.dataTable);
             }
-            (chartOptions.beforeDraw || function() {})(_this, chartOptions);
+            if (typeof chartOptions.beforeDraw === "function") {
+              chartOptions.beforeDraw(_this, chartOptions);
+            }
             if (formatter = chartOptions.formatter) {
               (function() {
                 _results = [];
