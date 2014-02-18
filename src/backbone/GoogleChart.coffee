@@ -138,12 +138,14 @@ class Backbone.GoogleChart extends Backbone.View
   off: @::unbind
   
   _addGoogleListener: ( event ) =>
+    @onGoogleLoad =>
       @google.events.addListener @wrapper, event, =>
         @trigger event, @wrapper.getChart()
         
   _removeGoogleListener: ( event ) =>
-    @google.events.removeListener @_listers[event]
-    delete @_listers[event]
+    @onGoogleLoad =>
+      @google.events.removeListener @_listers[event]
+      delete @_listers[event]
     
   _listers: {}
   
