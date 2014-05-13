@@ -7,9 +7,6 @@
   ],
   "description": "Google Charts support for your Backbone app",
   "main": "./lib/backbone/GoogleChart.js",
-  "moduleType": [
-    "amd"
-  ],
   "keywords": [
     "Backbone",
     "Google",
