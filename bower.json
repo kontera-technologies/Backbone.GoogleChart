@@ -1,0 +1,29 @@
+{
+  "name": "Backbone.GoogleChart",
+  "version": "0.0.1",
+  "homepage": "https://github.com/kontera-technologies/Backbone.GoogleChart",
+  "authors": [
+    "Eran Barak Levi <unknown@unknown.com>"
+  ],
+  "description": "Google Charts support for your Backbone app",
+  "main": "./lib/backbone/GoogleChart.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "Backbone",
+    "Google",
+    "Charts"
+  ],
+  "dependencies": {
+    "backbone": ">1.0.0"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
