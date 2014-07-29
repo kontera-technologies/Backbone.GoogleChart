@@ -18,7 +18,7 @@ class Backbone.GoogleChart extends Backbone.View
   ###
   initialize: ( options ) ->
     chartOptions = _.extend({},options)
-    ['el','id','attributes','className','tagName'].map (k) -> delete chartOptions[k]
+    _(['el','id','attributes','className','tagName']).map (k) -> delete chartOptions[k]
 
     google.load('visualization', '1', packages: ['corechart'], callback: => @onGoogleLoad "loaded")
 
