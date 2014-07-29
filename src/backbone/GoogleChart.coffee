@@ -30,8 +30,8 @@ class Backbone.GoogleChart extends Backbone.View
       chartOptions.beforeDraw? @, chartOptions
 
       if formatter = chartOptions.formatter
-        [0..chartOptions.dataTable.getNumberOfRows()-1].map (index)=>
-          formatter.columns.map (column)=>
+        _([0..chartOptions.dataTable.getNumberOfRows()-1]).map (index)=>
+          _(formatter.columns).map (column)=>
             chartOptions.dataTable.setFormattedValue(
               index, column, formatter.callback(
                 chartOptions.dataTable.getValue index, column
@@ -124,10 +124,10 @@ class Backbone.GoogleChart extends Backbone.View
     if event
       @_removeGoogleListener event
     else if callback
-      _(@_listers).pairs().map (pair)=>
+      _(_(@_listers).pairs()).map (pair)=>
         @_removeGoogleListener pair[0] if pair[1] == callback
     else
-      _(@_listers).values().map @_removeGoogleListener
+      _(_(@_listers).values()).map @_removeGoogleListener
         
     super event, callback, context
   
