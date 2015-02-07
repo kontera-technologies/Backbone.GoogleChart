@@ -109,7 +109,7 @@ class Backbone.GoogleChart extends Backbone.View
   # 
   ###  
   bind: (event, callback)=>
-    @_listers[event] ||= @_addGoogleListener event
+    @_listers()[event] ||= @_addGoogleListener event
     super event, callback
 
   ###
@@ -124,10 +124,10 @@ class Backbone.GoogleChart extends Backbone.View
     if event
       @_removeGoogleListener event
     else if callback
-      _(_(@_listers).pairs()).map (pair)=>
+      _(_(@_listers()).pairs()).map (pair)=>
         @_removeGoogleListener pair[0] if pair[1] == callback
     else
-      _(_(@_listers).values()).map @_removeGoogleListener
+      _(_(@_listers()).values()).map @_removeGoogleListener
         
     super event, callback, context
   
@@ -143,10 +143,11 @@ class Backbone.GoogleChart extends Backbone.View
         
   _removeGoogleListener: ( event ) =>
     @onGoogleLoad =>
-      @google.events.removeListener @_listers[event]
-      delete @_listers[event]
+      @google.events.removeListener @_listers()[event]
+      delete @_listers()[event]
     
-  _listers: {}
+  _listers: =>
+    @_listersObj ||= {}
   
   ###
   # Generate a random ID, gc_XXX
